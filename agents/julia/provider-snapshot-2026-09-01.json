@@ -1,0 +1,95 @@
+{
+  "snapshot_date": "2026-09-01",
+  "status": "CURRENT_PROVIDER_REFERENCE_NOT_TARGET",
+  "agent": {
+    "name": "Julia",
+    "agent_id": "agent_9501m0xnatwqfne90mcst6kb1wj8",
+    "branch_id": "agtbrch_7501m0xnavnjf9k9y583cgybgf9g",
+    "version_id": "agtvrsn_4001m1cgzbrtfky9v6nmknyknpe2"
+  },
+  "first_message": "Schoenen guten Tag Herr Schnetzer! Das freut mich, dass ich Sie erreiche. Mein Name ist Julia und ich bin eine KI Sprachagentin. Ich arbeite fuer die Agentur PixelKiez aus Berlin, sagt Ihnen unser Name was?",
+  "llm": {
+    "model": "gemini-3.7-flash",
+    "reasoning_effort": "low",
+    "temperature": 0.66,
+    "max_tokens": -1,
+    "reasoning_summary": false,
+    "timezone": "Europe/Berlin",
+    "cascade_timeout_seconds": 4,
+    "backup_models": ["gemini-2.5-flash", "qwen35-397b-a17b"],
+    "ignore_default_personality": true
+  },
+  "voice": {
+    "tts_model": "eleven_v3_conversational",
+    "voice_id": "6u6JbqKdaQy89ENzLSju",
+    "expressive_mode": true,
+    "stability": 0.46,
+    "speed": 1.04,
+    "similarity_boost": 0.8,
+    "streaming_latency_optimization": 3,
+    "output_audio": "pcm_16000",
+    "text_normalisation": "system_prompt",
+    "phoneme_tags_enabled": true
+  },
+  "asr": {
+    "provider": "scribe_realtime",
+    "quality": "high",
+    "input_audio": "pcm_16000",
+    "keywords": []
+  },
+  "turn_taking": {
+    "model": "turn_v3",
+    "turn_timeout_seconds": 7,
+    "eagerness": "normal",
+    "mode": "turn",
+    "spelling_patience": "auto",
+    "speculative_turn": true,
+    "retranscribe_on_timeout": false,
+    "silence_end_call_timeout": -1,
+    "initial_wait": null
+  },
+  "conversation": {
+    "text_only": false,
+    "max_duration_seconds": 600,
+    "monitoring": false,
+    "source_attribution": true,
+    "background_voice_detection": false,
+    "file_input_enabled": true
+  },
+  "dynamic_variables": [
+    "company_name", "company_website", "prospect_name", "prospect_salutation",
+    "call_compliance_status", "call_compliance_note", "do_not_contact", "lead_source",
+    "consultant_name", "meeting_duration_minutes", "meeting_description", "offer_process",
+    "website_analysis_report", "agency_name", "verified_finding"
+  ],
+  "knowledge": {
+    "bindings_observed": 8,
+    "rag_enabled": true,
+    "embedding_model": "multilingual_e5_large_instruct",
+    "optional_rag": false,
+    "max_vector_distance": 0.6,
+    "max_documents_length": 50000,
+    "max_retrieved_chunks": 20
+  },
+  "tools": {
+    "tool_ids": [],
+    "built_in_tools_active": [],
+    "mcp_server_ids": [],
+    "native_mcp_server_ids": []
+  },
+  "guardrails": ["focus", "prompt_injection"],
+  "success_evaluations": [],
+  "data_collection": [],
+  "known_defects": [
+    "static_Herr_Schnetzer_first_message",
+    "fake_human_Stuttgart_biography_in_prompt",
+    "prompt_describes_external_actions_without_bound_tools",
+    "no_provider_success_evaluations"
+  ],
+  "source": {
+    "confluence_page_id": "41713665",
+    "baseline_repo": "DYAI2025/pixelkiez-base",
+    "baseline_ref": "pxk-4-julia-baseline-freeze",
+    "baseline_prompt_path": "agents/julia/baseline/2026-08-31/prompt-baseline.md"
+  }
+}
