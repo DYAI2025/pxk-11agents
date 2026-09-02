@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "agent_key": "julia",
+  "display_name": "Julia",
+  "purpose": "Pixelkiez B2B Website-Audit Erstkontakt, Relevanzklaerung und qualifizierter Human-Handoff",
+  "status": "active",
+  "default_mode": "candidate-safe",
+  "supported_modes": {
+    "candidate-safe": {
+      "recommended": true,
+      "description": "Neue Account-Installation mit geschuetzter Julia Conversation-DNA und reparierten bekannten Baseline-Defekten."
+    },
+    "replica-current": {
+      "recommended": false,
+      "description": "Historische Reproduktion des Provider-Snapshots vom 2026-09-01 fuer Vergleichstests."
+    }
+  },
+  "sources": {
+    "provider_snapshot_date": "2026-09-01",
+    "provider_agent_id_reference": "agent_9501m0xnatwqfne90mcst6kb1wj8",
+    "provider_branch_reference": "agtbrch_7501m0xnavnjf9k9y583cgybgf9g",
+    "provider_version_reference": "agtvrsn_4001m1cgzbrtfky9v6nmknyknpe2",
+    "baseline_repo": "DYAI2025/pixelkiez-base",
+    "baseline_ref": "pxk-4-julia-baseline-freeze",
+    "baseline_path": "agents/julia/baseline/2026-08-31/prompt-baseline.md",
+    "confluence_provider_page_id": "41713665"
+  },
+  "known_baseline_defects_not_to_propagate": [
+    "static_person_name_in_first_message",
+    "invented_human_stuttgart_biography",
+    "fake_action_claim_without_tool_success",
+    "employee_or_owner_name_leakage",
+    "unsupported_ranking_or_business_impact_claims",
+    "sexualized_drift_reinforcement"
+  ],
+  "protected_baseline_traits": [
+    "explicit_ai_identity",
+    "natural_spoken_language",
+    "short_phone_suitable_turns",
+    "responsive_followup",
+    "one_primary_question_per_turn",
+    "audit_grounding",
+    "hard_no_respected",
+    "truth_over_booking_rate",
+    "warm_professional_tone"
+  ],
+  "live_call_authorized": false
+}
