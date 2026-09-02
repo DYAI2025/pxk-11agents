@@ -1,14 +1,31 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "agent_key": "julia",
   "display_name": "Julia",
-  "purpose": "Pixelkiez B2B Website-Audit Erstkontakt, Relevanzklaerung und qualifizierter Human-Handoff",
+  "purpose": "Pixelkiez B2B Website-Audit Erstkontakt, Rollen-/Relevanzklaerung und qualifizierter Human-Handoff",
   "status": "active",
   "default_mode": "candidate-safe",
+  "pre_test_repair": {
+    "status": "IMPLEMENTED_IN_REPOSITORY",
+    "implemented_at": "2026-09-03",
+    "requires_provider_provisioning_and_readback": true,
+    "repairs": [
+      "first_contact_disclosure_permission_role_gate",
+      "wrong_person_no_substantive_pitch",
+      "soft_resistance_vs_appointment_refusal_vs_hard_no",
+      "single_analysis_fallback_after_appointment_refusal",
+      "three_meeting_invitation_ceiling",
+      "hard_no_suppresses_all_fallbacks",
+      "contact_source_truthfulness",
+      "commercial_context_transparency",
+      "direct_questions_answered_before_meeting_bridge",
+      "v1_3_contract_vs_prompt_bootstrap_binding"
+    ]
+  },
   "supported_modes": {
     "candidate-safe": {
       "recommended": true,
-      "description": "Neue Account-Installation mit geschuetzter Julia Conversation-DNA und reparierten bekannten Baseline-Defekten."
+      "description": "Neue Account-Installation mit geschuetzter Julia Conversation-DNA und Pre-Test-Repair."
     },
     "replica-current": {
       "recommended": false,
@@ -23,7 +40,10 @@
     "baseline_repo": "DYAI2025/pixelkiez-base",
     "baseline_ref": "pxk-4-julia-baseline-freeze",
     "baseline_path": "agents/julia/baseline/2026-08-31/prompt-baseline.md",
-    "confluence_provider_page_id": "41713665"
+    "confluence_provider_page_id": "41713665",
+    "batch_contract": "pixelkiez-elevenlabs-batch-contract-v1.3",
+    "batch_contract_version": "1.3.0",
+    "batch_contract_sha256": "ed9924084c479c3627ceb2648ef301162d5b99bbfddfe3fefe265c7cec915d38"
   },
   "known_baseline_defects_not_to_propagate": [
     "static_person_name_in_first_message",
@@ -31,7 +51,12 @@
     "fake_action_claim_without_tool_success",
     "employee_or_owner_name_leakage",
     "unsupported_ranking_or_business_impact_claims",
-    "sexualized_drift_reinforcement"
+    "sexualized_drift_reinforcement",
+    "premature_exit_after_soft_resistance",
+    "missing_first_contact_role_gate",
+    "missing_analysis_fallback_after_appointment_refusal",
+    "fourth_meeting_ask_after_three_noncommittal_responses",
+    "invented_consent_or_contact_source"
   ],
   "protected_baseline_traits": [
     "explicit_ai_identity",
@@ -40,9 +65,14 @@
     "responsive_followup",
     "one_primary_question_per_turn",
     "audit_grounding",
-    "hard_no_respected",
     "truth_over_booking_rate",
     "warm_professional_tone"
   ],
-  "live_call_authorized": false
+  "readiness": {
+    "repository_pre_test_repair": "PASS",
+    "provider_configured_verified": false,
+    "behavior_tested": false,
+    "internal_conversation_test_ready": false,
+    "live_call_authorized": false
+  }
 }
