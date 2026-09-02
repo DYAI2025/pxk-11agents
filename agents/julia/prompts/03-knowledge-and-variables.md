@@ -1,62 +1,72 @@
-# Step 03 — Configure Julia Context Surface
+# Step 03 — Configure Julia Context + v1.3 Contract Surface
 
-Arbeite ausschliesslich auf der in Step 01 ermittelten Julia `agent_id`. Nutze `agents/julia/target-config.json` als Sollquelle.
+Arbeite ausschliesslich auf der in Step 01 ermittelten Julia `agent_id`.
 
-## Ziel
+Sollquellen:
+- `agents/julia/target-config.json`
+- `contracts/pixelkiez-v1.3-variable-map.md`
 
-Eine kleine, reproduzierbare Bootstrap-Surface konfigurieren. Der grosse Pixelkiez Batch-/Traceability-Contract wird nicht blind als LLM-Kontext injiziert.
+## 1. Contract Gate
 
-## Dynamic Variables
+Pruefe zuerst, dass der Sollvertrag exakt ist:
+- contract: `pixelkiez-elevenlabs-batch-contract-v1.3`
+- version: `1.3.0`
+- 96 Felder gesamt
+- `phone_number` = Transportfeld
+- 95 case-sensitive Custom Dynamic Variables
+- source SHA-256 = `ed9924084c479c3627ceb2648ef301162d5b99bbfddfe3fefe265c7cec915d38`
 
-Stelle exakt diese Custom Variables bereit:
+Kein stilles Umbenennen, Weglassen oder Hinzufuegen von Contract-Feldern.
 
-- `company_name`
-- `company_website`
-- `prospect_name`
-- `prospect_salutation`
-- `call_compliance_status`
-- `call_compliance_note`
-- `do_not_contact`
-- `lead_source`
-- `consultant_name`
-- `meeting_duration_minutes`
-- `meeting_description`
-- `offer_process`
-- `website_analysis_report`
-- `agency_name`
-- `verified_finding`
+## 2. Provider Dynamic Variable Surface
 
-Setze `agency_name=Pixelkiez`, falls Default-Werte providerseitig unterstuetzt werden. Alle lead-spezifischen Werte bleiben leer/default-neutral und werden spaeter pro Conversation geliefert. Keine Testpersonen oder realen Kundendaten als Defaults hinterlegen.
+Stelle am Provider-/Batch-Rand alle 95 Custom Dynamic Variables aus `contracts/pixelkiez-v1.3-variable-map.md` bereit, soweit ElevenLabs die Variable-Definition auf Agentebene erwartet/unterstuetzt.
 
-## Knowledge Base / RAG
+WICHTIG: 95 Provider-Variablen bedeuten NICHT 95 Prompt-Injektionen.
 
-1. Lies zuerst bestehende Knowledge Bindings der Julia.
+Der stabile Julia-Systemprompt referenziert nur den in `target-config.json` definierten `prompt_bootstrap_variables`-Subset. INTERNAL_RECORD, OPTIONAL und PRODUCTION_GATE_ONLY Daten werden nicht automatisch gesprochen oder in jeden Turn injiziert.
+
+Nutze Runtime-Defaults nur gemaess dem v1.3-Vertrag. Keine realen Kundendaten als statische Defaults speichern.
+
+Wenn die Provider-Oberflaeche keine explizite Definition aller 95 Variablen verlangt, dokumentiere dies als Provider-Verhalten; veraendere den kanonischen Contract deshalb nicht.
+
+## 3. Knowledge Base / RAG
+
+1. Lies bestehende Knowledge Bindings.
 2. Vermeide Duplikate.
-3. Binde/erzeuge nur die kuratierten Pixelkiez Quellen aus `target-config.json`, soweit sie im Account erreichbar und unterstuetzt sind.
-4. Aktiviere RAG mit:
-   - embedding `multilingual_e5_large_instruct`;
-   - optional_rag `false`;
-   - max_vector_distance `0.6`;
-   - max_documents_length `50000`;
-   - max_retrieved_chunks `20`.
-5. Lead-spezifische Website-Audits NICHT als dauerhafte Knowledge-Base-Dokumente speichern. Sie kommen spaeter pro Call ueber `website_analysis_report` bzw. scoped Tools.
-6. Keine Tools, MCP oder Calendar-Integration in diesem Schritt.
+3. Binde nur die kuratierten Pixelkiez-Quellen aus `target-config.json`.
+4. RAG Soll:
+   - `multilingual_e5_large_instruct`
+   - optional_rag `false`
+   - max_vector_distance `0.6`
+   - max_documents_length `50000`
+   - max_retrieved_chunks `20`
+5. Lead-spezifische Audits NICHT als permanente KB-Dokumente speichern; per Conversation/Tool liefern.
+6. Keine CRM-, Calendar- oder MCP-Tools in diesem Schritt.
 
 ## Readback Gate
 
-Lies Dynamic Variables und KB/RAG Bindings erneut. Melde Duplikate oder unerwartete Quellen als Diff; loesche nichts, was nicht eindeutig von diesem Provisioning erzeugt wurde.
+Lies Variable-Surface und KB/RAG erneut.
+
+PASS nur wenn:
+- der v1.3 Contract nicht reduziert/umbenannt wurde;
+- der Bootstrap-Subset weiterhin bounded ist;
+- keine fremden Kundendaten als Defaults gespeichert wurden;
+- Knowledge keine offensichtlichen Duplikate/unerwarteten Bindings enthaelt.
 
 ## Ausgabe
 
 ```json
 {
-  "status": "PASS|PARTIAL|BLOCKED_UNEXPECTED_DIFF",
+  "status": "PASS|PARTIAL|BLOCKED_CONTRACT_DRIFT|BLOCKED_UNEXPECTED_DIFF",
   "agent_id": "...",
-  "variables_readback": [],
+  "contract_id": "pixelkiez-elevenlabs-batch-contract-v1.3",
+  "contract_field_count": 96,
+  "provider_custom_variable_count_expected": 95,
+  "provider_custom_variable_count_readback": null,
+  "prompt_bootstrap_variables_readback": [],
   "knowledge_readback": [],
   "rag_readback": {},
-  "created_resources": [],
-  "existing_resources_reused": [],
   "capability_missing": [],
   "unexpected_diffs": [],
   "warnings": []
