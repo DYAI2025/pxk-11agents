@@ -1,70 +1,77 @@
-# Step 05 — Final Julia Verification
+# Step 05 — Final Julia Pre-Test Verification
 
-Fuehre jetzt ausschliesslich einen vollstaendigen READ-ONLY Readback der in Step 01 bestimmten Julia durch. Keine weiteren Mutationen.
+Fuehre ausschliesslich einen vollstaendigen READ-ONLY Readback der in Step 01 bestimmten Julia durch. Keine weiteren Mutationen.
 
 ## Sollquellen
-
 - `agents/julia/manifest.json`
 - `agents/julia/target-config.json`
 - `agents/julia/system-prompt.md`
+- `contracts/pixelkiez-v1.3-variable-map.md`
 - `shared/verification-contract.md`
 
-## Verifizieren
+## Provider-Konfiguration verifizieren
+1. Agent Name/ID und Branch/Version.
+2. First Message ohne statischen Fremdnamen.
+3. System Prompt entspricht candidate-safe Pre-Test-Repair.
+4. LLM + Generation Settings.
+5. Voice/TTS/Expressive Mode.
+6. ASR + Turn Taking.
+7. Conversation Surface.
+8. v1.3 Contract Binding: 96 Felder, `phone_number` Transport, 95 Custom Dynamic Variables bzw. providerseitig aequivalente Batch-Surface.
+9. Prompt-Bootstrap bleibt bounded; keine 95-fache Blindinjektion in Stable Policy.
+10. Knowledge Bindings + RAG ohne offensichtliche Duplikate.
+11. Externe CRM/Calendar/MCP Tools fuer diesen Slice weiterhin nicht gebunden.
+12. Guardrails.
+13. Success Evaluations / Regression Tests soweit im Account verwaltbar.
 
-1. Agent Name und ID.
-2. Branch/Version soweit verfuegbar.
-3. First Message.
-4. System Prompt / eindeutiger Prompt-Readback.
-5. LLM + Generation Settings.
-6. Voice/TTS/Expressive Mode.
-7. ASR + Turn Taking.
-8. Conversation Surface.
-9. Dynamic Variables.
-10. Knowledge Bindings + RAG.
-11. `tool_ids` — fuer v1 weiterhin keine externen CRM/Calendar Tools.
-12. `built_in_tools` — nur was in Step 02/04 explizit gesetzt wurde.
-13. MCP Bindings — fuer v1 leer.
-14. Guardrails.
-15. Success Evaluations / Tests, soweit im Account verwaltbar.
+## Pre-Test Policy Assertions
+Der installierte Prompt muss eindeutig enthalten bzw. bewirken:
+- FIRST_CONTACT_DISCLOSURE -> PERMISSION_CHECK -> ROLE_CHECK vor substanziellem Pitch;
+- falsche nicht-zustaendige Person bekommt keinen Audit-Pitch und hoechstens eine Routingfrage;
+- direkte Fragen werden vor Meeting-Bridging beantwortet;
+- SOFT_RESISTANCE != APPOINTMENT_REFUSAL != HARD_NO;
+- Hard No beendet Persuasion und unterdrueckt jeden Fallback;
+- Appointment Refusal darf hoechstens einmal den kostenlosen Analyse-Fallback ausloesen;
+- nach drei non-committalen Meeting-Reaktionen kein vierter Ask;
+- kein Analyseversand-/Booking-/Opt-out-Erfolg ohne positiven Readback;
+- Lead-Quelle und kommerzieller Kontext werden wahrheitsgemaess behandelt; keine erfundene Einwilligung;
+- keine menschliche Stuttgart-/Herkunftsbiografie;
+- keine Mitarbeiter-/Owner-Leakage oder unsupported Claims.
 
 ## Diff-Regeln
+Nicht lesbare Providerfelder = `SOURCE_NEEDED`, nicht automatisch Fehler. Unerwartete Werte = `unexpected_diffs`. Contract-Feldverlust/Umbenennung = `BLOCKED_CONTRACT_DRIFT`.
 
-- Vergleiche Wert fuer Wert gegen `target-config.json`.
-- Erwarte KEINEN statischen Namen `Herr Schnetzer`.
-- Erwarte KEINE menschliche Stuttgart-/Herkunftsbiografie im Prompt.
-- Erwarte keine gebundenen externen CRM-, Calendar- oder MCP-Tools in diesem v1-Slice.
-- Nicht lesbare Felder sind `SOURCE_NEEDED`, nicht automatisch Fehler.
-- Unerwartete veraenderte Felder sind `unexpected_diffs`.
+## Test-Readiness
+`CONFIGURED_VERIFIED` bedeutet nur: Sollkonfiguration ist providerseitig gebunden/readback-geprueft. Es bedeutet NICHT automatisch `BEHAVIOR_TESTED`, Tool-E2E, Telephony-E2E oder Live-Outbound-Freigabe.
 
-## Abschlussstatus
-
-Nutze nur:
-
-- `CONFIGURED_VERIFIED`
-- `CONFIGURED_PARTIAL`
-- `BLOCKED_CAPABILITY`
-- `BLOCKED_UNEXPECTED_DIFF`
-- `NOT_CONFIGURED`
+Interner Conversation-Test ist erst `READY_FOR_INTERNAL_CONVERSATION_TEST`, wenn:
+- Config Readback ohne Blocker;
+- Pre-Test Policy Assertions vorhanden;
+- Regression Tests zumindest angelegt/referenziert oder als manueller Testplan vorhanden;
+- keine Live-Call-Autorisierung daraus abgeleitet wird.
 
 ## Ausgabe
-
 ```json
 {
-  "status": "CONFIGURED_VERIFIED|CONFIGURED_PARTIAL|BLOCKED_CAPABILITY|BLOCKED_UNEXPECTED_DIFF|NOT_CONFIGURED",
+  "status": "CONFIGURED_VERIFIED|CONFIGURED_PARTIAL|BLOCKED_CAPABILITY|BLOCKED_CONTRACT_DRIFT|BLOCKED_UNEXPECTED_DIFF|NOT_CONFIGURED",
   "agent_key": "julia",
   "agent_id": "...",
   "profile": "candidate-safe",
   "branch_id": "...|SOURCE_NEEDED",
   "version_id": "...|SOURCE_NEEDED",
   "verified_sections": [],
+  "contract_readback": {},
+  "pre_test_policy_assertions": {},
   "source_needed": [],
   "capability_missing": [],
   "unexpected_diffs": [],
-  "known_unwired_capabilities": ["crm_tools", "calendar_tools", "external_mcp", "live_calling"],
+  "behavior_tested": false,
+  "internal_conversation_test_readiness": "READY_FOR_INTERNAL_CONVERSATION_TEST|NOT_READY",
+  "known_unwired_capabilities": ["crm_tools", "calendar_tools", "analysis_delivery_tool", "external_mcp", "live_calling"],
   "live_call_authorized": false,
   "receipt_ready": true,
   "warnings": []
 }
 ```
 
-Anschliessend formatiere denselben Befund gemaess `receipts/RECEIPT_TEMPLATE.md` fuer die Ablage im Repository oder die Rueckgabe an den User.
+Danach Receipt gemaess `receipts/RECEIPT_TEMPLATE.md` erzeugen.
