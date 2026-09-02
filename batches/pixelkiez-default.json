@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "batch_key": "pixelkiez-default",
+  "description": "Default Pixelkiez agent provisioning batch. Add future agents here only after their registry entry and agent folder are complete.",
+  "mode": "candidate-safe",
+  "agents": [
+    {
+      "agent_key": "julia",
+      "enabled": true,
+      "order": 10
+    }
+  ],
+  "stop_on_blocked_agent": true,
+  "parallelism": 1,
+  "start_live_calls": false
+}
