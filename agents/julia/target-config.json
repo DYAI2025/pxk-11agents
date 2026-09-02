@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "agent_key": "julia",
   "profile": "candidate-safe",
   "identity": {
@@ -33,16 +33,11 @@
     "audio_effects": null,
     "suggested_audio_tags": [
       {"name": "Selbstbewusst", "use": "Einstieg und Erklaerung des Anlasses"},
-      {"name": "Lacht", "use": "nur bei klar harmlos-humorvollem Kontext; niemals zur Verstaerkung sexualisierter/persoenlicher Drift"},
+      {"name": "Lacht", "use": "nur bei klar harmlos-humorvollem Kontext; niemals bei sexualisierter/persoenlicher Drift"},
       {"name": "Geduldig", "use": "wenn der Gespraechspartner Anlass oder Begriff nicht versteht"}
     ]
   },
-  "asr": {
-    "provider": "scribe_realtime",
-    "quality": "high",
-    "input_audio": "pcm_16000",
-    "keywords": []
-  },
+  "asr": {"provider": "scribe_realtime", "quality": "high", "input_audio": "pcm_16000", "keywords": []},
   "turn_taking": {
     "model": "turn_v3",
     "turn_timeout_seconds": 7,
@@ -63,39 +58,50 @@
     "file_input_enabled": false,
     "client_events": ["audio", "interruption", "user_transcript", "agent_response", "agent_response_correction"]
   },
-  "dynamic_variables": [
-    "company_name",
-    "company_website",
-    "prospect_name",
-    "prospect_salutation",
-    "call_compliance_status",
-    "call_compliance_note",
-    "do_not_contact",
-    "lead_source",
-    "consultant_name",
-    "meeting_duration_minutes",
-    "meeting_description",
-    "offer_process",
-    "website_analysis_report",
-    "agency_name",
-    "verified_finding"
-  ],
+  "contract_binding": {
+    "contract_id": "pixelkiez-elevenlabs-batch-contract-v1.3",
+    "version": "1.3.0",
+    "source_sha256": "ed9924084c479c3627ceb2648ef301162d5b99bbfddfe3fefe265c7cec915d38",
+    "field_count": 96,
+    "transport_field": "phone_number",
+    "provider_custom_dynamic_variable_count": 95,
+    "variable_map": "contracts/pixelkiez-v1.3-variable-map.md",
+    "policy": "Expose all 95 case-sensitive custom dynamic variables at provider/batch boundary, but reference only the bounded prompt bootstrap subset in stable system policy. Internal, post-call and production-gate fields are not automatically spoken or injected into every turn.",
+    "prompt_bootstrap_variables": [
+      "company_name", "company_website", "prospect_name", "prospect_salutation",
+      "call_compliance_status", "call_compliance_note", "do_not_contact", "lead_source",
+      "consultant_name", "meeting_duration_minutes", "meeting_description", "offer_process",
+      "website_analysis_report", "agency_name", "verified_finding"
+    ]
+  },
   "dynamic_variable_defaults": {
     "agency_name": "Pixelkiez",
     "prospect_name": "",
-    "prospect_salutation": "",
+    "prospect_salutation": "Guten Tag",
     "company_name": "",
     "company_website": "",
     "call_compliance_status": "",
     "call_compliance_note": "",
     "do_not_contact": "",
     "lead_source": "",
-    "consultant_name": "",
+    "consultant_name": "Pixelkiez Beratungsteam",
     "meeting_duration_minutes": "",
     "meeting_description": "",
     "offer_process": "",
     "website_analysis_report": "",
     "verified_finding": ""
+  },
+  "conversation_policy": {
+    "first_contact_gate": ["FIRST_CONTACT_DISCLOSURE", "PERMISSION_CHECK", "ROLE_CHECK"],
+    "wrong_person": {"substantive_pitch": false, "max_routing_questions": 1},
+    "direct_questions_first": true,
+    "states": ["SOFT_RESISTANCE", "APPOINTMENT_REFUSAL", "HARD_NO"],
+    "hard_no_suppresses_all_fallbacks": true,
+    "analysis_fallback": {"enabled": true, "max_offers": 1, "requires_no_hard_no": true, "claim_sent_requires_positive_readback": true},
+    "meeting_invitation_ceiling": 3,
+    "fourth_meeting_ask_forbidden": true,
+    "contact_source_truth_required": true,
+    "commercial_context_must_not_be_hidden": true
   },
   "knowledge": {
     "rag_enabled": true,
@@ -104,12 +110,7 @@
     "max_vector_distance": 0.6,
     "max_documents_length": 50000,
     "max_retrieved_chunks": 20,
-    "required_sources": [
-      "https://pixelkiez.de/",
-      "https://pixelkiez.de/en/",
-      "https://pixelkiez.de/impressum/",
-      "https://pixelkiez.de/datenschutz/"
-    ],
+    "required_sources": ["https://pixelkiez.de/", "https://pixelkiez.de/en/", "https://pixelkiez.de/impressum/", "https://pixelkiez.de/datenschutz/"],
     "deduplicate_equivalent_bindings": true,
     "lead_specific_audit_as_per_call_variable_not_permanent_kb": true
   },
@@ -128,14 +129,12 @@
       "play_keypad_touch_tone": null
     }
   },
-  "guardrails": {
-    "focus": true,
-    "prompt_injection": true
-  },
+  "guardrails": {"focus": true, "prompt_injection": true},
   "provisioning_constraints": {
     "start_live_calls": false,
     "bind_crm_tools": false,
     "bind_calendar_tools": false,
+    "bind_analysis_delivery_tool": false,
     "enable_external_mcp": false,
     "store_secrets_in_repo": false
   }
