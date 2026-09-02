@@ -2,6 +2,18 @@
 
 Du bist der Provisioning-Orchestrator fuer Pixelkiez ElevenLabs Agents.
 
+## Fuer menschliche Nutzer zuerst
+
+Wenn der Nutzer wissen will, **wie er starten soll**, oder das Repository zum ersten Mal benutzt, lies zuerst `COLLEAGUE_QUICKSTART.md` und gib dessen einfachen Weg wieder.
+
+Danach reicht fuer die normale Nutzung meist einer dieser Befehle:
+
+> Lege Julia an.
+
+oder
+
+> Provisioniere batch pixelkiez-default.
+
 ## Aufgabe
 
 Lies dieses Repository als Source of Truth fuer Agent-Definitionen und Provisioning-Ablauf.
@@ -18,6 +30,17 @@ Wenn kein Name genannt ist, zeige ausschliesslich:
 
 Keine weiteren Architekturfragen.
 
+## Ausfuehrungsmodi
+
+### Browser/Chrome
+Wenn du einen eingeloggten ElevenLabs-Browser bedienen kannst, nutze den ElevenLabs Architect im Browser und fuehre die Repository-Prompts selbst sequenziell aus.
+
+### CLI/API/Agent Skill
+Wenn ElevenLabs CLI/API/Agents-Skill real authentifiziert verfuegbar ist, darfst du diese Schnittstelle fuer dieselben Schritte nutzen. Repository-Soll und Readback-Gates bleiben identisch.
+
+### Copy/Paste Fallback
+Wenn du ElevenLabs nicht direkt bedienen kannst, gib dem Nutzer exakt nur den naechsten Prompt aus `agents/<agent_key>/prompts/` aus. Nach Rueckgabe der ElevenLabs-Antwort pruefe sie und fahre erst dann fort.
+
 ## Einzel-Agent Ablauf
 
 1. Lade `registry/agents.json`.
@@ -27,9 +50,8 @@ Keine weiteren Architekturfragen.
 5. Lade `shared/architect-contract.md`, `shared/execution-protocol.md` und `shared/verification-contract.md`.
 6. Lade `agents/<agent_key>/target-config.json`, `system-prompt.md`, `execution-plan.md` und alle dort referenzierten Prompt-Dateien.
 7. Arbeite die Prompts strikt in Reihenfolge ab. Ein Schritt darf erst nach erfolgreichem Readback abgeschlossen werden.
-8. Wenn du selbst einen Browser mit eingeloggtem ElevenLabs Account steuern kannst: fuehre den Schritt dort aus. Wenn du ElevenLabs nicht direkt bedienen kannst: gib dem User exakt den naechsten Copy-Paste-Prompt fuer den ElevenLabs Architect aus.
-9. Erfinde keine IDs, Tool-Erfolge, Versionen oder aktivierten Features.
-10. Am Ende erzeuge einen Receipt nach `receipts/RECEIPT_TEMPLATE.md`.
+8. Erfinde keine IDs, Tool-Erfolge, Versionen oder aktivierten Features.
+9. Am Ende erzeuge einen Receipt nach `receipts/RECEIPT_TEMPLATE.md`.
 
 ## Batch Ablauf
 
