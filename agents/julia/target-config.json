@@ -1,0 +1,142 @@
+{
+  "schema_version": "1.0",
+  "agent_key": "julia",
+  "profile": "candidate-safe",
+  "identity": {
+    "name": "Julia",
+    "language": "de-DE",
+    "timezone": "Europe/Berlin",
+    "ai_disclosure_required": true
+  },
+  "first_message": "Guten Tag {{prospect_salutation}} {{prospect_name}}, hier ist Julia, die KI-Telefonassistentin von {{agency_name}}. Wir haben uns Ihre Unternehmenswebsite vorab technisch angesehen. Ich rufe unangemeldet an – haben Sie gerade ungefähr zwei Minuten, oder passt es überhaupt nicht?",
+  "llm": {
+    "model": "gemini-3.7-flash",
+    "reasoning_effort": "low",
+    "temperature": 0.66,
+    "max_tokens": -1,
+    "reasoning_summary": false,
+    "cascade_timeout_seconds": 4,
+    "backup_models": ["gemini-2.5-flash", "qwen35-397b-a17b"],
+    "ignore_default_personality": true
+  },
+  "voice": {
+    "tts_model": "eleven_v3_conversational",
+    "voice_id": "6u6JbqKdaQy89ENzLSju",
+    "expressive_mode": true,
+    "stability": 0.46,
+    "speed": 1.04,
+    "similarity_boost": 0.8,
+    "streaming_latency_optimization": 3,
+    "output_audio": "pcm_16000",
+    "text_normalisation": "system_prompt",
+    "phoneme_tags_enabled": true,
+    "audio_effects": null,
+    "suggested_audio_tags": [
+      {"name": "Selbstbewusst", "use": "Einstieg und Erklaerung des Anlasses"},
+      {"name": "Lacht", "use": "nur bei klar harmlos-humorvollem Kontext; niemals zur Verstaerkung sexualisierter/persoenlicher Drift"},
+      {"name": "Geduldig", "use": "wenn der Gespraechspartner Anlass oder Begriff nicht versteht"}
+    ]
+  },
+  "asr": {
+    "provider": "scribe_realtime",
+    "quality": "high",
+    "input_audio": "pcm_16000",
+    "keywords": []
+  },
+  "turn_taking": {
+    "model": "turn_v3",
+    "turn_timeout_seconds": 7,
+    "eagerness": "normal",
+    "mode": "turn",
+    "spelling_patience": "auto",
+    "speculative_turn": true,
+    "retranscribe_on_timeout": false,
+    "silence_end_call_timeout": -1,
+    "initial_wait": null
+  },
+  "conversation": {
+    "text_only": false,
+    "max_duration_seconds": 600,
+    "monitoring": false,
+    "source_attribution": true,
+    "background_voice_detection": false,
+    "file_input_enabled": false,
+    "client_events": ["audio", "interruption", "user_transcript", "agent_response", "agent_response_correction"]
+  },
+  "dynamic_variables": [
+    "company_name",
+    "company_website",
+    "prospect_name",
+    "prospect_salutation",
+    "call_compliance_status",
+    "call_compliance_note",
+    "do_not_contact",
+    "lead_source",
+    "consultant_name",
+    "meeting_duration_minutes",
+    "meeting_description",
+    "offer_process",
+    "website_analysis_report",
+    "agency_name",
+    "verified_finding"
+  ],
+  "dynamic_variable_defaults": {
+    "agency_name": "Pixelkiez",
+    "prospect_name": "",
+    "prospect_salutation": "",
+    "company_name": "",
+    "company_website": "",
+    "call_compliance_status": "",
+    "call_compliance_note": "",
+    "do_not_contact": "",
+    "lead_source": "",
+    "consultant_name": "",
+    "meeting_duration_minutes": "",
+    "meeting_description": "",
+    "offer_process": "",
+    "website_analysis_report": "",
+    "verified_finding": ""
+  },
+  "knowledge": {
+    "rag_enabled": true,
+    "embedding_model": "multilingual_e5_large_instruct",
+    "optional_rag": false,
+    "max_vector_distance": 0.6,
+    "max_documents_length": 50000,
+    "max_retrieved_chunks": 20,
+    "required_sources": [
+      "https://pixelkiez.de/",
+      "https://pixelkiez.de/en/",
+      "https://pixelkiez.de/impressum/",
+      "https://pixelkiez.de/datenschutz/"
+    ],
+    "deduplicate_equivalent_bindings": true,
+    "lead_specific_audit_as_per_call_variable_not_permanent_kb": true
+  },
+  "tools": {
+    "tool_ids": [],
+    "mcp_server_ids": [],
+    "native_mcp_server_ids": [],
+    "built_in_tools": {
+      "end_call": "configure_if_supported_for_hard_no_and_normal_close",
+      "update_state": "defer_until_state_contract_exists",
+      "language_detection": null,
+      "transfer_to_agent": null,
+      "transfer_to_number": null,
+      "skip_turn": null,
+      "voicemail_detection": "defer_until_telephony_slice",
+      "play_keypad_touch_tone": null
+    }
+  },
+  "guardrails": {
+    "focus": true,
+    "prompt_injection": true
+  },
+  "provisioning_constraints": {
+    "start_live_calls": false,
+    "bind_crm_tools": false,
+    "bind_calendar_tools": false,
+    "enable_external_mcp": false,
+    "store_secrets_in_repo": false
+  }
+}
