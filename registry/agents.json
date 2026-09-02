@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "default_mode": "candidate-safe",
+  "agents": [
+    {
+      "agent_key": "julia",
+      "display_name": "Julia",
+      "status": "active",
+      "purpose": "Pixelkiez B2B Website-Audit Erstkontakt und qualifizierter Human-Handoff",
+      "language": "de-DE",
+      "default_mode": "candidate-safe",
+      "supported_modes": ["candidate-safe", "replica-current"],
+      "path": "agents/julia",
+      "requires_live_call": false,
+      "live_call_authorized": false
+    }
+  ]
+}
