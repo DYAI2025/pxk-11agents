@@ -7,6 +7,7 @@ Fuehre ausschliesslich einen vollstaendigen READ-ONLY Readback der in Step 01 be
 - `agents/julia/target-config.json`
 - `agents/julia/system-prompt.md`
 - `contracts/pixelkiez-v1.3-variable-map.md`
+- `agents/julia/tests/TEST_CATALOG.md`
 - `shared/verification-contract.md`
 
 ## Provider-Konfiguration verifizieren
@@ -22,7 +23,25 @@ Fuehre ausschliesslich einen vollstaendigen READ-ONLY Readback der in Step 01 be
 10. Knowledge Bindings + RAG ohne offensichtliche Duplikate.
 11. Externe CRM/Calendar/MCP Tools fuer diesen Slice weiterhin nicht gebunden.
 12. Guardrails.
-13. Success Evaluations / Regression Tests soweit im Account verwaltbar.
+13. Success Evaluations / Regression Tests.
+
+## Test-Coverage Gate
+
+Der kanonische Repo-Katalog enthaelt **64 Tests**. Pruefe die Step-04-Coverage gegen `agents/julia/tests/TEST_CATALOG.md`.
+
+Besonders explizit vorhanden sein muessen:
+- E11 starker Themen-/Gespraechsdrift;
+- M01 interessiert -> Termin ploetzlich abgelehnt;
+- M02 interessiert -> Hard No;
+- M03 interessiert -> spaeter `doch kein Interesse mehr`;
+- M04 wechselnde Zustandslage skeptisch/interessiert/unsicher;
+- M05 wiederholter persoenlicher/off-topic Drift;
+- E14 Busy/Callback;
+- E31/E32 Booking Success/Failure Spezifikation;
+- E40 Memory Recall;
+- E41 widerspruechliche Prospect-Aussagen.
+
+Wenn ElevenLabs bestimmte Testfamilien nicht erstellen kann, duerfen diese als `CAPABILITY_MISSING` gelten, aber nicht stillschweigend fehlen.
 
 ## Pre-Test Policy Assertions
 Der installierte Prompt muss eindeutig enthalten bzw. bewirken:
@@ -30,6 +49,7 @@ Der installierte Prompt muss eindeutig enthalten bzw. bewirken:
 - falsche nicht-zustaendige Person bekommt keinen Audit-Pitch und hoechstens eine Routingfrage;
 - direkte Fragen werden vor Meeting-Bridging beantwortet;
 - SOFT_RESISTANCE != APPOINTMENT_REFUSAL != HARD_NO;
+- der neueste Gespraechszustand gewinnt; fruehere Zustimmung wird nicht als dauerhaft behandelt;
 - Hard No beendet Persuasion und unterdrueckt jeden Fallback;
 - Appointment Refusal darf hoechstens einmal den kostenlosen Analyse-Fallback ausloesen;
 - nach drei non-committalen Meeting-Reaktionen kein vierter Ask;
@@ -47,7 +67,7 @@ Nicht lesbare Providerfelder = `SOURCE_NEEDED`, nicht automatisch Fehler. Unerwa
 Interner Conversation-Test ist erst `READY_FOR_INTERNAL_CONVERSATION_TEST`, wenn:
 - Config Readback ohne Blocker;
 - Pre-Test Policy Assertions vorhanden;
-- Regression Tests zumindest angelegt/referenziert oder als manueller Testplan vorhanden;
+- der 64-Test-Katalog vollständig angelegt/reused oder jede nicht provisionierbare ID explizit als Capability Gap dokumentiert ist;
 - keine Live-Call-Autorisierung daraus abgeleitet wird.
 
 ## Ausgabe
@@ -62,9 +82,14 @@ Interner Conversation-Test ist erst `READY_FOR_INTERNAL_CONVERSATION_TEST`, wenn
   "verified_sections": [],
   "contract_readback": {},
   "pre_test_policy_assertions": {},
+  "test_catalog_count": 64,
+  "tests_created_or_reused": [],
+  "missing_test_ids": [],
+  "test_capability_gaps": [],
   "source_needed": [],
   "capability_missing": [],
   "unexpected_diffs": [],
+  "tests_executed": false,
   "behavior_tested": false,
   "internal_conversation_test_readiness": "READY_FOR_INTERNAL_CONVERSATION_TEST|NOT_READY",
   "known_unwired_capabilities": ["crm_tools", "calendar_tools", "analysis_delivery_tool", "external_mcp", "live_calling"],
